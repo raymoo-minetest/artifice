@@ -56,7 +56,7 @@ minetest.register_craftitem(name,
 				  minetest.chat_send_player(user:get_player_name(), "Links removed.")
 			  end
 		  elseif old_meta == "" then
-			  local gp = minetest.get_node_group(node.name, "energyproducer")
+			  local gp = minetest.get_item_group(node.name, "energyproducer")
 			  if gp == 0 then return end
 
 			  source_sparkles(pos, user)
@@ -66,7 +66,7 @@ minetest.register_craftitem(name,
 		  else
 			  local src_pos = minetest.string_to_pos(old_meta)
 
-			  local gp = minetest.get_node_group(node.name, "linkoutput")
+			  local gp = minetest.get_item_group(node.name, "linkoutput")
 			  if gp == 0 then
 				  stack:set_metadata("")
 				  minetest.chat_send_player(user:get_player_name(), "Linking Aborted.")
