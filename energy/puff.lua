@@ -1,5 +1,5 @@
 
--- An entity to represent energy puffness. Size is sqrt(amt) * 0.1, capped at 3.
+-- An entity to represent energy puffness. Size is sqrt(amt) * 0.1, capped at 1.
 
 minetest.register_entity("artifice:energy_puff",
 	{ physical = false,
@@ -74,5 +74,9 @@ function artifice.make_energy_puff(pos, amt, requestor)
 		ent.target_pos = requestor.pos
 	end
 
+	local scale = math.min(math.sqrt(amt) * 0.05, 1)
+	
+	obj:set_properties({visual_size = {x=scale, y=scale}})
+	
 	obj:set_armor_groups({immortal = 1})
 end
