@@ -60,6 +60,8 @@ minetest.register_entity("artifice:energy_puff",
 
 
 function artifice.make_energy_puff(pos, amt, requestor)
+	if amt == 0 then return end
+	
 	local obj = minetest.add_entity(pos, "artifice:energy_puff")
 
 	local ent = obj:get_luaentity()
