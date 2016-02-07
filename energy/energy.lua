@@ -22,7 +22,7 @@ function artifice.request_energy(pos, amount, requestor)
 	local node = minetest.get_node(pos)
 	local energy_def = artifice.node_field(node.name, "energyproducer")
 
-	if energy_def == nil then return end
+	if energy_def == nil then return 0 end
 	
 	return energy_def.take_energy(pos, amount, requestor)
 end
@@ -69,3 +69,4 @@ end
 dofile(artifice.energy_path .. "linker.lua")
 dofile(artifice.energy_path .. "puff.lua")
 dofile(artifice.energy_path .. "creative.lua")
+dofile(artifice.energy_path .. "battery.lua")
