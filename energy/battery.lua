@@ -18,7 +18,6 @@ local function take_battery_energy(pos, amt, requestor)
 	local meta = minetest.get_meta(pos)
 	local charge = meta:get_int("charge")
 
-
 	local real_amt = math.floor(amt)
 
 	local taken = math.min(charge, real_amt)
@@ -39,7 +38,7 @@ local function link(pos, in_pos)
 
 	src_tab = src_tab or {}
 
-	table.insert(src_tab, in_pos)
+	src_tab[minetest.hash_node_position(in_pos)] = in_pos
 
 	meta:set_string("sources", minetest.serialize(src_tab))
 end
@@ -117,7 +116,7 @@ minetest.register_abm({
 				    pos = pos,
 		}
 
-		for i, source in ipairs(sources) do
+		for i, source in pairs(sources) do
 			local taken_once = artifice.request_energy(source, amt - taken, requestor)
 
 			taken = taken + taken_once
