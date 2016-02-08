@@ -3,7 +3,7 @@
 
 minetest.register_node("artifice:creative_producer",
 	{ description = "Box of Unlimited Power",
-	  groups = {cracky=1, oddly_breakable_by_hand=3, energyproducer=1},
+	  groups = {oddly_breakable_by_hand=3, energyproducer=1},
 	  tiles = {"artifice_creative_producer.png",
 		   "artifice_creative_producer.png",
 		   "artifice_creative_producer.png",
@@ -22,7 +22,7 @@ minetest.register_node("artifice:creative_producer",
 
 minetest.register_node("artifice:creative_sink",
 	{ description = "Power Sink",
-	  groups = {cracky=1, oddly_breakable_by_hand=3, linkoutput=1},
+	  groups = {oddly_breakable_by_hand=3, linkoutput=1},
 	  tiles = {"artifice_creative_sink.png",
 		   "artifice_creative_sink.png",
 		   "artifice_creative_sink.png",
