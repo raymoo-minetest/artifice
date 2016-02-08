@@ -1,6 +1,6 @@
 
 minetest.register_craft({
 	type = "shapeless",
-	output = "artifice:mana_dust",
-	recipe = { "artifice:mana_crystal 2" },
+	output = "artifice:mana_dust 2",
+	recipe = { "artifice:mana_crystal" },
 })
