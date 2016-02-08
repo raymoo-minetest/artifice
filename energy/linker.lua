@@ -5,6 +5,7 @@ local texture = "artifice_linking_wand.png"
 local name = "artifice:linking_wand"
 local description = "Linking Wand"
 
+local link_range = 10
 
 local function source_sparkles(pos, player)
 	minetest.add_particlespawner({
@@ -65,12 +66,17 @@ minetest.register_craftitem(name,
 			  return stack
 		  else
 			  local src_pos = minetest.string_to_pos(old_meta)
-
 			  local gp = minetest.get_item_group(node.name, "linkoutput")
-			  if gp == 0 then
+
+			  if gp == 0 or vector.equals(pos, src_pos) then
 				  stack:set_metadata("")
 				  minetest.chat_send_player(user:get_player_name(), "Linking Aborted.")
 				  return stack
+			  end
+
+			  if vector.distance(src_pos, pos) > 10 then
+				  minetest.chat_send_player(user:get_player_name(), "Too far.")
+				  return
 			  end
 
 			  local suc = artifice.link_nodes(src_pos, pos)
