@@ -157,3 +157,45 @@ minetest.register_abm({
 		set_charge(meta, new_charge)
 	end,
 })
+
+
+-- Mana Magnet - Right click to give mana
+minetest.register_node("artifice:mana_magnet", {
+	description = "Mana Magnet",
+	groups = {choppy=3, oddly_breakable_by_hand=2, energyproducer=1},
+	drawtype = "nodebox",
+	paramtype = "light",
+	tiles = {"artifice_mana_magnet_top.png",
+		 "default_wood.png",
+		 "artifice_mana_magnet_side.png",
+		 "artifice_mana_magnet_side.png",
+		 "artifice_mana_magnet_side.png",
+		 "artifice_mana_magnet_side.png",
+	},
+	node_box = mana_leech_nodebox,
+
+	on_construct = def_on_construct,
+
+	on_rightclick = function(pos, node, clicker)
+		local meta = minetest.get_meta(pos)
+		local charge = meta:get_int("charge")
+		
+		local amt = math.min(max_gen_charge - charge, 50)
+
+		local requestor = { type = "node",
+				    pos = pos,
+		}
+
+		local suc, missing = mana.subtract_up_to(clicker:get_player_name(), amt)
+
+		if suc then
+			local taken = amt - missing
+			local p_pos = vector.add(clicker:getpos(), {x=0,y=1,z=0})
+			artifice.make_energy_puff(p_pos, taken, requestor)
+			set_charge(meta, charge + taken)
+		end
+	end,
+
+	energyproducer =
+		{ take_energy = def_take_energy(10) },
+})
