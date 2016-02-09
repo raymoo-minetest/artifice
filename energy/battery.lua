@@ -107,6 +107,7 @@ minetest.register_abm({
 		local meta = minetest.get_meta(pos)
 
 		local charge = meta:get_int("charge")
+		if charge == max_charge then return end
 		local sources = minetest.deserialize(meta:get_string("sources")) or {}
 
 		local amt = math.min(max_charge - charge, packet_size)
