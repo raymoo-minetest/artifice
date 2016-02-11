@@ -1,6 +1,4 @@
 
--- Refer to spell_shape for definitions of spell_env or shape_inout.
-
 -- "spell_env" refers to a table holding these fields:
 --   - player - casting player's name
 --   - spell_id - Unique numerical ID of the spell
@@ -12,14 +10,17 @@
 --   - loc - holds a position, if type == "loc"
 --   - entity - holds an ObjectRef, if type == "entity".
 
+-- "local_env" is a table with these fields:
+--   - modifiers - A set of string modifier tags
+--   - affinity - A map from affinity names to levels (adds up to 1)
 
 -- Effect definition is a table with fields:
 --   - disp_name: Display name
 --   - description: A description of the effect
 --   - texture: An icon for the item
 --   - sound: Sound to play (optional)
---   - executor: Name of an executor with eng type spell_env, input type
---       shape_inout, output type number
+--   - executor: Name of an executor with env type spell_env, input type
+--     shape_inout, output type number, param type local_env
 
 artifice.effects = {}
 

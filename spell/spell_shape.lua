@@ -14,11 +14,10 @@ local both = exec.both
 
 artifice.shapes = {}
 
--- spell_env and shape_inout are specified in spell_effect.lua
+-- local_env, spell_env, and shape_inout are specified in spell_effect.lua
 
 -- Shape Def: a table with fields:
---   priority: A number denoting what position the shape should be in. Can also
---     be "first", "last", or "exclusive".
+--   priority: An optional field, either "first", "last", or "exclusive"
 --   disp_name: Display name
 --   description: Description of the shape
 --   texture: An icon for the item

@@ -5,14 +5,18 @@ local executors = {}
 local exports = {}
 
 -- No type tags: An execute is just a function that looks like
---   func(env, input, tail)
+--   func(env, input, tail, param)
 --
 --   Tail is a chain to run afterwords, with the form
 --     { type = "base" or "parallel" or "serial" or "nothing",
 --       base = "base_name", -- If type == "base"
+--       param = <some parameter data> -- If type == "base"
 --       op1 = chain1, -- If type == "parallel" or "serial"
 --       op2 = chain2,
 --     }
+--
+-- param is a parameter specific to the executor. param could be nil if the
+-- particular executor does not need one.
 --
 -- Chains are the composable units of execution.
 
@@ -22,9 +26,10 @@ end
 
 exports.empty = { type = "nothing" }
 
-function exports.singleton(name)
+function exports.singleton(name, param)
 	return { type = "base",
 		 base = name,
+		 param = param,
 	}
 end
 
@@ -53,7 +58,7 @@ function exports.run_chain(chain, env, input, tail)
 	local typ = chain.type
 
 	if typ == "base" then
-		executors[chain.base](env, input, tail)
+		executors[chain.base](env, input, tail, chain.param)
 	elseif typ == "parallel" then
 		exports.run_chain(chain.op1, env, input, tail)
 		exports.run_chain(chain.op2, env, input, tail)
