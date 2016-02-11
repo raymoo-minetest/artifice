@@ -11,7 +11,7 @@
 --   - entity - holds an ObjectRef, if type == "entity".
 
 -- "local_env" is a table with these fields:
---   - modifiers - A set of string modifier tags
+--   - modifiers - A map from modifier names to levels
 --   - affinity - A map from affinity names to levels (adds up to 1)
 
 -- Effect definition is a table with fields:
