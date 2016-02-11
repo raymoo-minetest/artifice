@@ -1,2 +1,4 @@
 default
 mana
+monoidal_effects
+armor_monoid
