@@ -17,6 +17,11 @@ function artifice.obj_center(obj)
 end
 
 
+function artifice.trim(s)
+	return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+
+
 -- Reference
 -- 1: -x
 -- 2: -y
