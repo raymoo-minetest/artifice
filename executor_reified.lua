@@ -54,18 +54,20 @@ end
 local both = exports.both
 
 -- Takes a chain and runs it with the arguments.
-function exports.run_chain(chain, env, input, tail)
+local function run_chain(chain, env, input, tail)
 	local typ = chain.type
 
 	if typ == "base" then
 		executors[chain.base](env, input, tail, chain.param)
 	elseif typ == "parallel" then
-		exports.run_chain(chain.op1, env, input, tail)
-		exports.run_chain(chain.op2, env, input, tail)
+		run_chain(chain.op1, env, input, tail)
+		run_chain(chain.op2, env, input, tail)
 	elseif typ == "serial" then
-		exports.run_chain(chain.op1, env, input, chain.op2:andThen(tail))
+		run_chain(chain.op1, env, input, chain.op2:andThen(tail))
 	end
 end
+
+exports.run_chain = run_chain
 
 -- Example
 exports.register_executor("passThrough", function(env, input, chain)
