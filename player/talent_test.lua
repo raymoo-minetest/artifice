@@ -72,12 +72,13 @@ tree:add("diamond", {
 
 
 local maybe_string = artifice.load_data("talent_test")
-local data = tree:deserialize_p_data(maybe_string) or tree:new_p_data()
+local datas = (maybe_string and tree:deserialize_data(maybe_string))
+	or tree:new_data()
 
 
 local function show_tree(p_name)
 	local fs = "size[9,9]"
-	fs = fs .. data:build_formspec(p_name, 0.5, 0.5)
+	fs = fs .. datas:build_formspec(p_name, 0.5, 0.5)
 
 	minetest.show_formspec(p_name, "artifice:test_talent", fs)
 end
@@ -89,8 +90,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local p_name = player:get_player_name()
 	
 	if not fields["quit"] then
-		data:handle_fields(p_name, fields)
-		artifice.save_data("talent_test", data:serialize())
+		datas:handle_fields(p_name, fields)
+		artifice.save_data("talent_test", datas:serialize())
 		show_tree(p_name)
 	end
 

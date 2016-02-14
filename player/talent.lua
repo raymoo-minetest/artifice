@@ -54,46 +54,78 @@ function tt_methods.add(self, name, talent_def)
 end
 
 
-local pd_methods = {}
-local pd_meta = { __index = pd_methods }
+local d_methods = {}
+local d_meta = { __index = d_methods }
 
 
--- A talent player data is just a progress tree player data, but wrapped so
--- a different method table can be used. It has two fields: data, for the
--- prog tree player data, and tree, for the talent tree.
-function tt_methods.new_p_data(self, learned)
-	local ret = { data = self.prog_tree:new_player_data(learned),
-		      tree = self,
-		    }
+-- A talent data is a table with:
+--   datas - map from player name to prog tree data
+--   tree - the talent tree
+function tt_methods.new_data(self)
+	local ret = { tree = self,
+		      datas = {},
+	}
 
-	setmetatable(ret, pd_meta)
+	setmetatable(ret, d_meta)
 	return ret
 end
 
 
-function tt_methods.deserialize_p_data(self, serialized)
-	local ret = { data = self.prog_tree:deserialize_player_data(serialized),
-		      tree = self,
-		    }
+-- Storage format - map from player names to serialized prog tree data
+function tt_methods.deserialize_data(self, serialized)
+	local deserialized = minetest.deserialize(serialized)
+	if not deserialized then return end
 
-	setmetatable(ret, pd_meta)
+	local datas = {}
+	
+	for p_name, p_str in pairs(deserialized) do
+		datas[p_name] = self.prog_tree:deserialize_player_data(p_str)
+	end
+
+	local ret = { tree = self,
+		      datas = datas,
+	}
+	
+	setmetatable(ret, d_meta)
 	return ret
 end
 
 
-function pd_methods.serialize(self)
-	return self.data:serialize()
+function d_methods.serialize(self)
+	local store_tab = {}
+	local datas = self.datas
+
+	for p_name, p_data in pairs(datas) do
+		store_tab[p_name] = p_data:serialize()
+	end
+
+	return minetest.serialize(store_tab)
 end
 
 
-function pd_methods.knows(self, node_name)
-	return self.data:knows(node_name)
+function d_methods.get_p_data(self, p_name)
+	local datas = self.datas
+	local p_data = datas[p_name]
+
+	if p_data then return p_data end
+
+	datas[p_name] = self.tree.prog_tree:new_player_data()
+
+	return datas[p_name]
+end
+
+
+function d_methods.knows(self, p_name, node_name)
+	local p_data = self:get_p_data(p_name)
+
+	return p_data:knows(node_name)
 end
 
 
 -- Checks both that prerequisites are filled, and the registered can_learn.
-function pd_methods.can_learn(self, node_name, p_name)
-	local intern_can = self.data:can_learn(node_name)
+function d_methods.can_learn(self, p_name, node_name)
+	local p_data = self:get_p_data(p_name)
+	local intern_can = p_data:can_learn(node_name)
 	
 	if not intern_can then return false end
 
@@ -111,8 +143,9 @@ end
 
 -- Does the learning. Returns false on failure, true on success. This bypasses
 -- can_learn, in case you want to give a talent out of order.
-function pd_methods.learn(self, node_name, p_name)
-	local intern_succ = self.data:learn(node_name)
+function d_methods.learn(self, p_name, node_name)
+	local p_data = self:get_p_data(p_name)
+	local intern_succ = p_data:learn(node_name)
 
 	if not intern_succ then return false end
 
@@ -155,7 +188,7 @@ end
 
 -- Returns a formspec string, so you can modify it. It does not include the
 -- size, so you can embed it in another formspec.
-function pd_methods.build_formspec(self, p_name, off_x, off_y)
+function d_methods.build_formspec(self, p_name, off_x, off_y)
 	off_x = off_x or 0
 	off_y = off_y or 0
 
@@ -178,9 +211,9 @@ function pd_methods.build_formspec(self, p_name, off_x, off_y)
 	for name, def in pairs(node_defs) do
 		local state
 
-		if self:knows(name) then
+		if self:knows(p_name, name) then
 			state = "learned"
-		elseif self:can_learn(name, p_name) then
+		elseif self:can_learn(p_name, name) then
 			state = "available"
 		else
 			state = "unavailable"
@@ -194,12 +227,12 @@ end
 
 
 -- Does not reshow the formspec.
-function pd_methods.handle_fields(self, p_name, fields)
+function d_methods.handle_fields(self, p_name, fields)
 	local defs = self.tree.node_defs
 	
 	for name, content in pairs(fields) do
-		if self:can_learn(name, p_name) then
-			self:learn(name, p_name)
+		if self:can_learn(p_name, name) then
+			self:learn(p_name, name)
 		end
 	end
 end
