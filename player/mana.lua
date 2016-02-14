@@ -29,4 +29,5 @@ end)
 
 artifice.register_on_levelup(function(p_name, level)
 		apply_stats(p_name)
+		mana.set(p_name, max_for_level(level))
 end)
