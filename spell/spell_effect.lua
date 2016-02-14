@@ -4,11 +4,11 @@
 --   - spell_id - Unique numerical ID of the spell
 
 -- "shape_inout" refers to a table with these fields:
---   - type - Either "initial", "loc", or "entity"
---   - pointed_thing - holds a pointed_thing, only if type == "initial"
---   - dir - holds a direction, if type is "loc" or "entity". Might be nil.
---   - loc - holds a position, if type == "loc"
---   - entity - holds an ObjectRef, if type == "entity".
+--   - type - Either "directional", "node", or "entity"
+--   - source_pos - Where the effect is coming from
+--   - direction - Only if type == "directional"
+--   - node_pos - Only if type == "node"
+--   - entity - An ObjectRef, and only if type == "entity"
 
 -- "local_env" is a table with these fields:
 --   - modifiers - A map from modifier names to levels
@@ -18,7 +18,6 @@
 --   - disp_name: Display name
 --   - description: A description of the effect
 --   - texture: An icon for the item
---   - sound: Sound to play (optional)
 --   - executor: Name of an executor with env type spell_env, input type
 --     shape_inout, output type number, param type local_env
 

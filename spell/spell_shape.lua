@@ -21,7 +21,6 @@ artifice.shapes = {}
 --   disp_name: Display name
 --   description: Description of the shape
 --   texture: An icon for the item
---   sound: Sound to play (optional)
 --   executor: Name of an executor with env type spell_env, input type
 --     shape_inout, output type shape_inout
 
