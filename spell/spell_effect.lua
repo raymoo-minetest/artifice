@@ -29,7 +29,10 @@ function artifice.register_effect(name,def)
 
 	minetest.register_craftitem(i_name,
 		{ description = "Effect: " .. def.disp_name,
-		  groups = { spell_effect = 1, not_in_creative_inventory = 1 },
+		  groups = { spell_effect = 1,
+			     not_in_creative_inventory = 1,
+			     spell_component = 1,
+		  },
 		  effect = name,
 		  inventory_image = def.texture,
 		  stack_max = 1,

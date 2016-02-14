@@ -1,11 +1,7 @@
 
-local exec = dofile(artifice.modpath .. "executor.lua")
+local exec = artifice.exec
 
-local doNothing = exec.doNothing
-
-local provide = exec.provide
-
-local passThrough = exec.passThrough
+local singleton = exec.singleton
 
 local andThen = exec.andThen
 
@@ -31,7 +27,10 @@ function artifice.register_shape(name, def)
 
 	minetest.register_craftitem(i_name,
 		{ description = "Shape: " .. def.disp_name,
-		  groups = { spell_shape = 1, not_in_creative_inventory = 1 },
+		  groups = { spell_shape = 1,
+			     not_in_creative_inventory = 1,
+			     spell_component = 1,
+		  },
 		  shape = name,
 		  inventory_image = def.texture,
 		  stack_max = 1,
