@@ -21,10 +21,10 @@
 --   - executor: Name of an executor with env type spell_env, input type
 --     shape_inout, output type number, param type local_env
 
-artifice.effects = {}
 
-function artifice.register_effect(name,def)
-	artifice.effects[name] = def
+function artifice.register_effect(name, def)
+	def.type = "effect"
+	artifice.components[name] = def
 	local i_name = "artifice:effect_" .. name
 
 	minetest.register_craftitem(i_name,

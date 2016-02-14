@@ -8,8 +8,6 @@ local andThen = exec.andThen
 local both = exec.both
 
 
-artifice.shapes = {}
-
 -- local_env, spell_env, and shape_inout are specified in spell_effect.lua
 
 -- Shape Def: a table with fields:
@@ -22,7 +20,8 @@ artifice.shapes = {}
 
 
 function artifice.register_shape(name, def)
-	artifice.shapes[name] = def
+	def.type = "shape"
+	artifice.components[name] = def
 	local i_name = "artifice:shape_" .. name
 
 	minetest.register_craftitem(i_name,
