@@ -4,10 +4,12 @@
 --   - spell_id - Unique numerical ID of the spell
 
 -- "shape_inout" refers to a table with these fields:
---   - type - Either "directional", "node", or "entity"
+--   - type - Either "pointed", "directional", "node", or "entity"
 --   - source_pos - Where the effect is coming from
+--   - pointed_thing - if type == "pointed"
 --   - direction - Only if type == "directional"
---   - node_pos - Only if type == "node"
+--   - above - If type == "node" (Might be nil)
+--   - below - If type == "node" (Not nil)
 --   - entity - An ObjectRef, and only if type == "entity"
 
 -- "local_env" is a table with these fields:
