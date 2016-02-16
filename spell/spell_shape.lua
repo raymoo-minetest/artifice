@@ -15,6 +15,9 @@ local both = exec.both
 --   disp_name: Display name
 --   description: Description of the shape
 --   texture: An icon for the item
+--   calc_multiplier: Function taking a set of modifiers and outputting a
+--      cost multiplier.
+--   material_costs: A list of item names to spend during spell creation
 --   executor: Name of an executor with env type spell_env, input type
 --     shape_inout, output type shape_inout
 
@@ -48,6 +51,7 @@ local fizzle =
 	  disp_name = "Fizzle",
 	  description = "Causes your spell to fail",
 	  texture = "default_stone.png",
+	  cost_multiplier = 0,
 	  executor = "fizzle",
 	}
 artifice.register_shape("fizzle", fizzle)	
