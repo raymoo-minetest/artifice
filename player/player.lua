@@ -5,3 +5,4 @@ artifice.playerpath = playerpath
 dofile(playerpath .. "xp.lua")
 dofile(playerpath .. "mana.lua")
 dofile(playerpath .. "talent.lua")
+dofile(playerpath .. "ap.lua")
