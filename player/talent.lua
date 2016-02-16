@@ -164,6 +164,13 @@ function d_methods.learn(self, p_name, node_name)
 end
 
 
+function d_methods.player_nodes(self, p_name)
+	local p_data = self:get_p_data(p_name)
+
+	return p_data.learned
+end
+
+
 -- state is "available", "learned", or "unavailable"
 local function node_button(name, def, state, off_x, off_y)
 	local icon = def.icon
