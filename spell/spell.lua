@@ -205,5 +205,6 @@ function artifice.cast_player(spell, quality, cast_mode, pointed_thing, player)
 end
 
 dofile(sp .. "registration.lua")
+dofile(sp .. "components.lua")
 dofile(sp .. "component_tree.lua")
 dofile(sp .. "design_table.lua")

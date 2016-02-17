@@ -37,8 +37,15 @@ end
 
 
 -- Insert component registrations here --
-
-
+add_component("touch", {
+	description = "Touch",
+	icon = "artifice_shape_back.png^artifice_touch.png",
+	x = 4.5,
+	y = 0.5,
+	parents = {},
+	ap_cost = 1,
+})
+	
 -- End component registrations --
 
 
