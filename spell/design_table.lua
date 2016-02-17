@@ -158,7 +158,7 @@ local function comp_button(component, x, y, key)
 	local name = def.disp_name
 	local icon_s = minetest.formspec_escape(def.texture)
 
-	local fs = "image_button[" .. x .. "," .. y .. ";0.5,0.5"
+	local fs = "image_button[" .. x .. "," .. y .. ";0.5,0.5;"
 		.. icon_s .. ";" .. key .. ";]"
 	local tooltip = "tooltip[" .. key .. ";" .. name .. "]"
 
@@ -193,7 +193,7 @@ local function comp_bot_buttons(comps, x, y, w)
 	local fs = ""
 
 	for i, comp in ipairs(comps) do
-		fs = fs .. comp_button(k, cur_x, cur_y, i)
+		fs = fs .. comp_button(comp, cur_x, cur_y, i)
 
 		cur_x = cur_x + 0.5
 		if cur_x > x_bound then
@@ -335,3 +335,5 @@ minetest.register_on_joinplayer(function(player)
 	show_table_form(player:get_player_name())
 end)
 ]]--
+
+
