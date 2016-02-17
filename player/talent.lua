@@ -353,7 +353,7 @@ function d_methods.build_formspec(self, p_name, off_x, off_y)
 		table.insert(acc, node_button(name, def, state, off_x, off_y))
 		table.insert(acc, node_lines(def, node_defs, off_x, off_y))
 	end
-	print(table.concat(acc))
+
 	return table.concat(acc)
 end
 
