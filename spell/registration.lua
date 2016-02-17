@@ -12,7 +12,7 @@
 --   - pointed_thing - if type == "pointed"
 --   - direction - Only if type == "directional"
 --   - above - If type == "node" (Might be nil)
---   - below - If type == "node" (Not nil)
+--   - under - If type == "node" (Not nil)
 --   - entity - An ObjectRef, and only if type == "entity"
 
 -- "local_env" is a table with these fields:
