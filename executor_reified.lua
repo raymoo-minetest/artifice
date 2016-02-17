@@ -55,6 +55,7 @@ local both = exports.both
 
 -- Takes a chain and runs it with the arguments.
 local function run_chain(chain, env, input, tail)
+	if not chain then return end
 	local typ = chain.type
 
 	if typ == "base" then
