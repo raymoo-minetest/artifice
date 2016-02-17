@@ -1,7 +1,7 @@
 
 local tt = artifice.talent_tree
 
-local tree = tt.new_tree(8, 8, "artifice_talent_test.png")
+local tree = tt.new_tree(8, 8, "default_stone.png")
 
 
 local function dumb_learn(name)
@@ -14,8 +14,8 @@ end
 tree:add("wood", {
 	description = "Wood",
 	icon = "default_tree.png",
-	x = 1,
-	y = 0,
+	x = 1.5,
+	y = 0.5,
 	parents = {},
 	on_learn = dumb_learn("Wood"),
 })
@@ -24,8 +24,8 @@ tree:add("wood", {
 tree:add("stone", {
 	description = "Stone",
 	icon = "default_stone.png",
-	x = 5,
-	y = 0,
+	x = 5.5,
+	y = 0.5,
 	parents = {},
 	on_learn = dumb_learn("Stone"),
 })
@@ -34,9 +34,10 @@ tree:add("stone", {
 tree:add("plank", {
 	description = "Plank",
 	icon = "default_wood.png",
-	x = 4,
-	y = 2,
-	parents = {"wood"},
+	x = 4.5,
+	y = 2.5,
+	parents = { wood = "straight",
+	},
 	on_learn = dumb_learn("Plank"),
 })
 
@@ -44,9 +45,10 @@ tree:add("plank", {
 tree:add("cobble", {
 	description = "Cobblestone",
 	icon = "default_cobble.png",
-	x = 6,
-	y = 2,
-	parents = {"stone"},
+	x = 6.5,
+	y = 2.5,
+	parents = { stone = "straight",
+	},
 	on_learn = dumb_learn("Cobblestone"),
 })
 
@@ -54,19 +56,24 @@ tree:add("cobble", {
 tree:add("stonestick", {
 	description = "Stone on a Stick",
 	icon = "default_tool_stoneaxe.png",
-	x = 2,
-	y = 2,
-	parents = {"wood", "stone"},
-	on_learn = dumb_learn("Stone"),
+	x = 2.5,
+	y = 2.5,
+	parents = { wood = "down",
+		    stone = "straight",
+	},
+	on_learn = dumb_learn("Stone on a Stick"),
 })
 
 
 tree:add("diamond", {
 	description = "Diamond",
 	icon = "default_diamond.png",
-	x = 3,
-	y = 4,
-	parents = {"cobble", "stonestick", "plank"},
+	x = 3.5,
+	y = 4.5,
+	parents = { cobble = "straight",
+		    stonestick = "straight",
+		    plank = "straight",
+	},
 	on_learn = dumb_learn("Diamond"),
 })
 
