@@ -22,17 +22,17 @@ end
 -- Takes basically the same thing as a talent definition, but replace can_learn,
 -- on_learn with just ap_cost.
 local function add_component(name, def)
-	local can_learn, on_learn = make_callbacks(def.ap_cost)
-	def.can_learn = can_learn
-	def.on_learn = on_learn
-	def.description = def.description .. " (Cost: " .. def.ap_cost .. ")"
+	local actual_comp = {}
+	for k, v in pairs(def) do
+		actual_comp[k] = v
+	end
 	
-	comp_tree:add(name, def)
-end
-
-
-function artifice.components(p_name)
-	return comp_tree:player_nodes(p_name)
+	local can_learn, on_learn = make_callbacks(def.ap_cost)
+	actual_comp.can_learn = can_learn
+	actual_comp.on_learn = on_learn
+	actual_comp.description = def.description .. " (Cost: " .. def.ap_cost .. ")"
+	
+	comp_tree:add(name, actual_comp)
 end
 
 
@@ -53,8 +53,11 @@ end
 
 
 function artifice.show_skills(p_name)
-	local fs = "size[9,9]"
-	fs = fs .. datas:build_formspec(p_name)
+	local ap = artifice.get_ap(p_name)
+	local ap_text = minetest.formspec_escape("AP: " .. ap)
+	local fs = "size[9,10.5]"
+	fs = fs .. "label[4,0.5;" .. ap_text .. "]"
+	fs = fs .. datas:build_formspec(p_name, 0, 1.5)
 
 	minetest.show_formspec(p_name, "artifice:comp_tree", fs)
 end
@@ -72,3 +75,15 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	return true
 end)
+
+
+function artifice.known_components(p_name)
+	return datas:player_nodes(p_name)
+end
+
+
+--[[
+minetest.register_on_joinplayer(function(player)
+	artifice.show_skills(player:get_player_name())
+end)
+]]--
