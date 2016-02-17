@@ -8,9 +8,6 @@ local sp = artifice.spellpath
 
 artifice.components = {}
 
-dofile(sp .. "spell_shape.lua")
-dofile(sp .. "spell_effect.lua")
-
 
 -- A spell component is a table with a field type of either "shape" or "effect",
 -- based on whether they were registered as a spell shape or an effect. They will
@@ -207,5 +204,6 @@ function artifice.cast_player(spell, quality, cast_mode, pointed_thing, player)
 	return true
 end
 
+dofile(sp .. "registration.lua")
 dofile(sp .. "component_tree.lua")
 dofile(sp .. "design_table.lua")
