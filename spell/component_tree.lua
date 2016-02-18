@@ -45,6 +45,17 @@ add_component("touch", {
 	parents = {},
 	ap_cost = 1,
 })
+
+add_component("dig", {
+	description = "Dig",
+	icon = "artifice_shape_back.png^artifice_dig.png",
+	x = 4.5,
+	y = 1.5,
+	parents = { touch = "straight",
+	},
+	ap_cost = 1,
+})
+
 	
 -- End component registrations --
 
