@@ -3,12 +3,12 @@ local function revipairs(tab)
 	local end_i = #tab
 
 	local iterator = function(s, i)
-		if i == 0 then return end
+		if i == 1 then return end
 
-		return i - 1, tab[i]
+		return i - 1, tab[i - 1]
 	end
 
-	return iterator, nil, end_i
+	return iterator, nil, end_i + 1
 end
 	
 
@@ -35,7 +35,7 @@ local function parse_recipe(comp_list)
 			local new_effect = { name = str,
 					     modifiers = cur_mods,
 			}
-			table.insert(cur_mods, new_effect)
+			table.insert(cur_effs, new_effect)
 			cur_mods = {}
 		elseif def.type == "shape" then -- Shape
 
