@@ -173,7 +173,7 @@ end
 
 function artifice.cast_pointed(spell, quality, cast_mode, pointed_thing, pointer)
 	local inout = { type == "pointed",
-			source_pos = pointer:getpos(),
+			source_pos = artifice.obj_center(pointer),
 			pointed_thing = pointed_thing,
 	}
 
