@@ -139,7 +139,6 @@ local function show_recipe(p_name, recipe)
 	-- Called with no new recipe 
 	if not recipe then
 		if state.page == "components" and state.comp_page then
-			print(state.comp_page)
 			minetest.show_formspec(p_name, recipe_form, state.comp_page)
 		elseif state.page == "materials" and state.mat_page then
 			minetest.show_formspec(p_name, recipe_form, state.mat_page)
