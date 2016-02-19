@@ -396,3 +396,13 @@ minetest.register_node("artifice:design_table", {
 		show_table_form(p_name)
 	end,
 })
+
+
+minetest.register_craft({
+	output = "artifice:design_table",
+	recipe = {
+		{"default:paper", "default:paper", "default:paper"},
+		{"default:wood", "default:wood", "default:wood"},
+		{"default:wood", "default:wood", "default:wood"},
+	},
+})
