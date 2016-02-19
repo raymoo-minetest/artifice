@@ -30,6 +30,7 @@ artifice.components = {}
 -- A spell recipe is a template for creating spells. It is a table with fields:
 --   name: Name of the recipe (used for display)
 --   owner: Name of the creator
+--   material_costs: List of items
 --   recipe: A shape recipe
 
 
@@ -204,6 +205,7 @@ function artifice.cast_player(spell, quality, cast_mode, pointed_thing, player)
 	return true
 end
 
+dofile(sp .. "recipe_item.lua")
 dofile(sp .. "registration.lua")
 dofile(sp .. "components.lua")
 dofile(sp .. "component_tree.lua")

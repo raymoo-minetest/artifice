@@ -101,22 +101,47 @@ local function check_known(p_name, components)
 end
 
 
-minetest.register_craftitem("artifice:recipe", {
-	description = "Spell Recipe",
-	groups = { not_in_creative_inventory = 1 },
-	inventory_image = "artifice_recipe.png",
-	stack_max = 1,
-})
+local function calc_helper(recipe, acc, is_shape)
+	local def = artifice.components[recipe.name]
+	if def then
+		for i, item in ipairs(def.material_costs) do
+			table.insert(acc, item)
+		end
+	end
 
+	
+	-- Costs from modifiers
+	for k in pairs(recipe.modifiers) do
+		local def = artifice.components[k]
+		if def then
+			for i, item in ipairs(def.material_costs) do
+				table.insert(acc, item)
+			end
+		end
+	end
 
+	
+	-- If we're in a shape, we need to add costs from its effects
+	if is_shape then
+		for i, recipe in ipairs(recipe.effects) do
+			calc_helper(recipe, acc)
+		end
+	end
+end
+
+-- Takes a shape recipe and returns its material costs.
 local function calc_material_cost(recipe)
+	local acc = {}
+	calc_helper(recipe, acc, true)
+
+	return acc
 end
 
 
 local function make_recipe_item(recipe)
 	local stack = ItemStack("artifice:recipe")
-	local meta = recipe
-	stack:set_metadata(minetest.serialize(meta))
+	local meta = minetest.serialize(recipe)
+	stack:set_metadata(meta)
 	return stack
 end
 
@@ -150,6 +175,12 @@ local function clear_workspace(p_name)
 end
 
 
+local TERRIBLE_X = 5/4
+local TERRIBLE_Y = 15/13
+
+local but_w = 0.5 * TERRIBLE_X
+local but_h = 0.5 * TERRIBLE_Y
+
 local function comp_button(component, x, y, key)
 	local def = artifice.components[component]
 	if def == nil then return "" end
@@ -158,7 +189,7 @@ local function comp_button(component, x, y, key)
 	local name = def.disp_name
 	local icon_s = minetest.formspec_escape(def.texture)
 
-	local fs = "image_button[" .. x .. "," .. y .. ";0.5,0.5;"
+	local fs = "image_button[" .. x .. "," .. y .. ";" .. but_w .. ",".. but_h .. ";"
 		.. icon_s .. ";" .. key .. ";]"
 	local tooltip = "tooltip[" .. key .. ";" .. name .. "]"
 
@@ -208,7 +239,7 @@ end
 
 local function make_formspec(p_name, spell_name, err_str)
 
-	spell_name = spell_name or "New Spell"
+	spell_name = spell_name or ""
 	local known_comps = artifice.known_components(p_name)
 	local ws = get_workspace(p_name)
 
@@ -262,6 +293,7 @@ local function make_recipe_for_player(player, name, comps)
 
 	local recipe = { name = name,
 			 owner = player:get_player_name(),
+			 material_costs = calc_material_cost(result),
 			 recipe = result,
 	}
 			 
@@ -291,7 +323,19 @@ local function handle_fields(player, formname, fields)
 		if not succ then
 			show_table_form(p_name, fields.name_field, result)
 		else
-			minetest.add_item(player:getpos(), result)
+			local p_inv = player:get_inventory()
+			if p_inv:room_for_item("main", result) then
+				p_inv:add_item("main", result)
+			else
+				local eject_pos = vector.add({x=0,y=1,z=0}, player:getpos())
+				local item = minetest.add_item(player:getpos(), result)
+
+				if item then
+					item:setvelocity(player:get_look_dir())
+				end
+			end
+
+			clear_workspace(p_name)
 		end
 
 		return true
@@ -337,3 +381,15 @@ end)
 ]]--
 
 
+-- An actual node for the design table
+minetest.register_node("artifice:design_table", {
+	description = "Spell Design Table",
+	groups = { choppy = 3 },
+	tiles = {}, -- Fill in later,
+	sounds = default.node_sound_wood_defaults(),
+	on_rightclick = function(pos, node, clicker)
+		local p_name = clicker:get_player_name()
+
+		show_table_form(p_name)
+	end,
+})
