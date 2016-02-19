@@ -385,7 +385,10 @@ end)
 minetest.register_node("artifice:design_table", {
 	description = "Spell Design Table",
 	groups = { choppy = 3 },
-	tiles = {}, -- Fill in later,
+	tiles = {"artifice_design_table_top.png",
+		 "default_wood.png",
+		 "artifice_design_table_side.png",
+	},
 	sounds = default.node_sound_wood_defaults(),
 	on_rightclick = function(pos, node, clicker)
 		local p_name = clicker:get_player_name()
